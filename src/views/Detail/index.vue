@@ -78,7 +78,7 @@
                 <a href="javascript:" class="mins" @click="skuNum>1?skuNum--:skuNum=1">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a @click="addShopCar">加入购物车</a>
               </div>
             </div>
           </div>
@@ -367,6 +367,18 @@ export default {
         this.skuNum = 1;
       }else{
         this.skuNum = parseInt(value);
+      }
+    },
+    async addShopCar(){
+      //派发action
+      try{
+        await this.$store.dispatch('addOrUpdateShopChar', {skuId: this.$route.params.skuId, skuNum: this.skuNum});
+        //会话存储
+        sessionStorage.setItem("SKUINFO", JSON.stringify(this.skuInfo)); 
+        //成功后跳转路由
+        this.$router.push({name: "addcartsuccess", query: {skuNum: this.skuNum}});
+      }catch (error){
+        alert(error.message);
       }
     }
   },

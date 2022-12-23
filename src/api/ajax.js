@@ -4,6 +4,7 @@ import axios from 'axios'
 import nprogress, { done, start } from 'nprogress';
 import 'nprogress/nprogress.css';
 //start：进度条开始，done：进度条结束
+import store from '@/store';
 
 const requests = axios.create({
     baseURL: '/api',
@@ -14,6 +15,9 @@ const requests = axios.create({
 requests.interceptors.request.use((config)=>{
     start();
     //config配置对象里有一个很重要的属性，headers请求头
+    if(store.state.detail.uuid_token){
+        config.headers.userTempId = store.state.detail.uuid_token;
+    }
     return config;
 });
 
