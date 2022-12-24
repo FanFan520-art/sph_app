@@ -31,6 +31,15 @@ const actions = {
         }else{
             return Promise.reject(new Error('faile'));
         }
+    },
+    deleteAllCheckedCart({dispatch, getters}){
+        //获取购物车中全部的产品
+        let promiseAll = [];
+        getters.cartList.cartInfoList.forEach(item => {
+            let result = item.isChecked==1 ? dispatch('deleteCartListBySkuId', item.skuId) : '';
+            promiseAll.push(result);
+        });
+        return Promise.all(promiseAll);
     }
 };
 const getters = {
