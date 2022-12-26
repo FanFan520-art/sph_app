@@ -5,11 +5,15 @@
             <div class="container">
                 <div class="loginList">
                     <p>尚品汇欢迎您！</p>
-                    <p>
+                    <p v-if="!loginName">
                         <span>请</span>
                         <!-- <a href="###">登录</a> -->
                         <router-link to="/login">登录</router-link>
                         <router-link class="register" to="/register">免费注册</router-link>
+                    </p>
+                    <p v-else>
+                        <a>{{ loginName }}</a>
+                        <a class="register" @click="logout">退出登录</a>
                     </p>
                 </div>
                 <div class="typeList">
@@ -52,6 +56,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
     name: '',
     data(){
@@ -71,12 +76,25 @@ export default {
             };
             location.query = this.$route.query;
             this.$router.push(location);
+        },
+        async logout(){
+            try{
+                //发请求退出登录，后端服务器清除一些数据
+                await this.$store.dispatch('userLogout');
+                this.$router.push('/home');
+            }catch(error){
+                alert(error.message);
+            }
         }
     },
     mounted(){
         this.$bus.$on('clear', () =>{
             this.keyword = '';
         });
+    },
+    computed: {
+        //从user仓库中取得登录用户的名字
+        ...mapGetters(['loginName'])
     }
 }
 </script>

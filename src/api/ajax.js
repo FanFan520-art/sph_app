@@ -18,6 +18,10 @@ requests.interceptors.request.use((config)=>{
     if(store.state.detail.uuid_token){
         config.headers.userTempId = store.state.detail.uuid_token;
     }
+    //在请求头带上token信息，登录成功的时候向服务获取用户登录数据
+    if(store.state.user.token){
+        config.headers.token = store.state.user.token;
+    }
     return config;
 });
 

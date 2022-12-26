@@ -33,6 +33,8 @@ export default{
     mounted(){
         //在父组件home中发起action，因为mock的floor组件数据有两个，在一个里面请求不行
         this.$store.dispatch("getFloorList");
+        //请求用户的登录信息（此时请求拦截器判断登录后服务器有没有返回token，这次请求会带上，向服务器捞用户数据）
+        this.$store.dispatch("userInfo");
     },
     computed:{
         ...mapState({
