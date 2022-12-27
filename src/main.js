@@ -15,6 +15,9 @@ Vue.component(Pagination.name, Pagination);
 import '@/mock/mockServe';
 //引入swiper
 import 'swiper/css/swiper.css';
+
+//统一接口api文件里全部的请求函数
+import * as API from '@/api';
 Vue.config.productionTip = false;
 
 //测试发请求的代码
@@ -25,6 +28,7 @@ new Vue({
   //配置全局事件总线
   beforeCreate(){
     Vue.prototype.$bus = this;
+    Vue.prototype.$API = API;
   },
   render: h => h(App),
   //注册路由：底下的写法KV一致省略V
