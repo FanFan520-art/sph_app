@@ -79,7 +79,9 @@
         try{
           const {phone, password} = this;
           (phone && password) &&  await this.$store.dispatch('userLogin', {phone, password});
-          this.$router.push('/home');
+          //看登录的路由是否包含query参数(原来路由里面都会有query和params)
+          let toPath = this.$route.query.redirect || '/home';
+          this.$router.push(toPath);
         }catch(error){
           alert(error.message);
         }
