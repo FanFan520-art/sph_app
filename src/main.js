@@ -23,11 +23,21 @@ import 'swiper/css/swiper.css';
 
 //统一接口api文件里全部的请求函数
 import * as API from '@/api';
+
+//引入懒加载插件
+import VueLazyload from 'vue-lazyload';
+import wukong from '@/assets/1.gif';
+//注册插件
+Vue.use(VueLazyload,{
+  loading: wukong
+})
 Vue.config.productionTip = false;
 
-//测试发请求的代码
-// import {reqGetSearchInfo} from '@/api';
-// reqGetSearchInfo();
+//注册自定义插件
+import myPlugins from '@/plugins/myPlugins';
+Vue.use(myPlugins, {
+  name: 'NiuNiu'
+});
 
 new Vue({
   //配置全局事件总线

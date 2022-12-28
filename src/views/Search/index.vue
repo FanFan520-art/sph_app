@@ -48,7 +48,7 @@
                 <div class="list-wrap">
                   <div class="p-img">
                     <!--这里的导航式路由可以点击，并且也可以传参数-->
-                    <router-link :to="`/detail/${good.id}`"><img :src="good.defaultImg" /></router-link>
+                    <router-link :to="`/detail/${good.id}`"><img v-lazy="good.defaultImg" /></router-link>
                   </div>
                   <div class="price">
                     <strong>

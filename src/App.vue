@@ -14,6 +14,11 @@ import Footer from './components/Footer'
 
 export default {
   name: '',
+  data(){
+    return {
+      msg: 'ABC'
+    }
+  },
   components:{
     Header,
     Footer

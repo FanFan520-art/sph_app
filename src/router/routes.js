@@ -1,6 +1,6 @@
 //引入路由组件
 import Home from '@/views/Home'
-import Search from '@/views/Search'
+//import Search from '@/views/Search'
 import Login from '@/views/Login'
 import Register from '@/views/Register'
 import Detail from '@/views/Detail'
@@ -89,7 +89,7 @@ export default [
     },
     {
         path: "/search/:keyword?",
-        component: Search,
+        component: ()=>import('@/views/Search'),
         meta: {show: true},
         name: "search",
         //路由组件传参可以通过props
