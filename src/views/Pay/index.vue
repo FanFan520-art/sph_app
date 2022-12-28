@@ -2,6 +2,7 @@
   <div class="pay-main">
     <div class="pay-container">
       <div class="checkout-tit">
+        <el-button type="primary" icon="el-icon-plus">测试</el-button>
         <h4 class="tit-txt">
           <span class="success-icon"></span>
           <span class="success-info">订单提交成功，请您及时付款，以便尽快为您发货~~</span>
@@ -66,7 +67,7 @@
 
         <div class="submit">
           <!-- <router-link class="btn" to="/paysuccess">立即支付</router-link> -->
-          <a class="btn">立即支付</a>
+          <a class="btn" @click="open">立即支付</a>
         </div>
         <div class="otherpay">
           <div class="step-tit">
@@ -83,11 +84,14 @@
 </template>
 
 <script>
+import QRCode from 'qrcode';
   export default {
     name: 'Pay',
     data(){
       return {
-        payInfo: {}
+        payInfo: {},
+        timer: null,
+        code: ''
       }
     },
     computed:{
@@ -106,7 +110,56 @@
         if(result.code==200){
           this.payInfo = result.data;
         }
-      }
+      },
+      async open(){
+        let url = await QRCode.toDataURL(this.payInfo.codeUrl);
+        //console.log(url);
+        this.$alert(`<img src=${url} />`, '请用微信支付', {
+          dangerouslyUseHTMLString: true,
+          center: true,
+          showCancelButton: true,
+          cancelButtonText: '支付遇见问题',
+          confirmButtonText: '已支付成功',
+          showClose: false,
+          //关闭弹窗框的配置
+          beforeClose: (type, instance, done) => {
+            if(type == 'cancel'){
+              alert('请联系管理员范哥');
+              clearInterval(this.timer);
+              this.timer = null;
+              done();
+            }else{
+              //这里可以留个后门(==200)
+              // if(this.code==200){
+              //   clearInterval(this.timer);
+              //   this.timer = null;
+              //   done();
+              //   this.$router.push('/paysuccess');
+              // }
+              clearInterval(this.timer);
+              this.timer = null;
+              done();
+              this.$router.push('/paysuccess');
+            }
+          }
+        });
+        if(!this.timer){
+          this.timer = setInterval(async ()=>{
+            let result = await this.$API.reqPayStatus(this.orderId);
+            if(result.code==200){
+              //第一步：清除定时器
+              clearInterval(this.timer);
+              this.timer = null;
+              //第二步：获取code
+              this.code = result.code
+              //第三步：关闭弹窗
+              this.$msgbox.close();
+              //跳到下一级路由
+              this.$router.push('/paysuccess');
+            }
+          }, 1000);
+        }
+      },
     }
   }
 </script>

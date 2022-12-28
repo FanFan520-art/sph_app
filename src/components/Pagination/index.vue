@@ -10,7 +10,7 @@
 
         <button v-if="startNumAndEndNum.end < totalPage - 1">···</button>
         <button v-if="startNumAndEndNum.end < totalPage" @click="$emit('getPageNo', totalPage)" :class="pageNo==totalPage">{{ totalPage }}</button>
-        <button :disabled="pageNo==totalPage">下一页</button>
+        <button :disabled="pageNo==totalPage" @click="$emit('getPageNo', pageNo+1)">下一页</button>
 
         <button style="margin-left: 30px">{{ total }}</button>
     </div>

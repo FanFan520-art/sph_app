@@ -8,7 +8,36 @@ import AddCartSuccess from '@/views/AddCartSuccess'
 import ShopCart from '@/views/ShopCart'
 import Trade from '@/views/Trade'
 import Pay from '@/views/Pay'
+import PaySuccess from '@/views/PaySuccess'
+import Center from '@/views/Center'
+//引入二级路由
+import MyOrder from '@/views/Center/myOrder'
+import GroupOrder from '@/views/Center/groupOrder'
 export default [
+    {
+        path: "/center",
+        component: Center,
+        meta: {show: true},
+        children:[
+            {
+                path: "myorder",
+                component: MyOrder
+            },
+            {
+                path: "grouporder",
+                component: GroupOrder
+            },
+            {
+                path: "/center",
+                redirect: "/center/myorder"
+            }
+        ]
+    },
+    {
+        path: "/paysuccess",
+        component: PaySuccess,
+        meta: {show: true}
+    },
     {
         path: "/pay",
         name: "pay",
